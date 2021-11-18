@@ -1,13 +1,3 @@
-#ifdef LOCAL
-    #include "debug.h"
-#else
-    #define dbg(...) 0
-#endif
-
-//#pragma GCC target ("avx2")
-//#pragma GCC optimization ("O3")
-//#pragma GCC optimization ("unroll-loops")
-
 #include <bits/stdc++.h>
 #define x first
 #define y second
@@ -30,10 +20,8 @@ mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 int uid(int x, int y) {
     return uniform_int_distribution<>(x, y)(rng);
 }
-
 /*
-verified: https://www.spoj.com/problems/CLOPPAIR/
-much better constant than recursive (runs in ~1.2s for 1e6)
+verify: https://www.spoj.com/problems/CLOPPAIR/
 source : https://codeforces.com/blog/entry/58747.
 not much changes needed for double, maybe consider an eps.
 */
@@ -72,7 +60,7 @@ pair<point, point> closest_point_solver(vector<point> P) {
 
 int main() {
     ios_base::sync_with_stdio(0); cin.tie(0);
-
+    //testing
     int n = 100;
     //cin >> n;
     vector<pii> arr(n);

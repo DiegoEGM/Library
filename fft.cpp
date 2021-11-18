@@ -1,9 +1,3 @@
-#ifdef LOCAL
-    #include "debug.h"
-#else
-    #define dbg(...) 0
-#endif
-
 #include <bits/stdc++.h>
 #define f first
 #define s second

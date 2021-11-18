@@ -1,9 +1,3 @@
-#ifdef LOCAL
-    #include "debug.h"
-#else
-    #define dbg(...) 0
-#endif
-
 #include <bits/stdc++.h>
 #define f first
 #define s second
@@ -18,9 +12,6 @@ using pii = pair<int, int>;
 
 const int N = 2e5 + 3;
 const int P = 998244353, G = 3; //119 * 2^{23} + 1.
-/*other examples:
-??? check other ppl references
-*/
 
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 

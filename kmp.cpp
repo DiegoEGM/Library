@@ -1,9 +1,3 @@
-#ifdef LOCAL
-    #include "debughead.h"
-#else
-    #define dbg(...) 0
-#endif
-
 #include <bits/stdc++.h>
 using namespace std;
 

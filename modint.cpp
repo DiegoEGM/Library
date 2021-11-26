@@ -62,7 +62,7 @@ void init_fact(int n) {
 }
 
 mint nck(int n, int k) {
-    if(k > n || n < 0) return 0;
+    if(k > n || n < 0) return mint(0);
     return fact[n] * invfact[n - k] * invfact[k];
 }
 

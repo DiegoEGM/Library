@@ -1,6 +1,4 @@
 #include <bits/stdc++.h>
-#define x first
-#define y second
 #define pb push_back
 #define inf INT_MAX
 #define all(x) (x).begin(), (x).end()

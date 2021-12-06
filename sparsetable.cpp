@@ -1,9 +1,3 @@
-#ifdef LOCAL
-    #include "debug.h"
-#else
-    #define dbg(...) 0
-#endif
-
 #include <bits/stdc++.h>
 #define f first
 #define s second
@@ -34,12 +28,10 @@ struct SparseTable {
     SparseTable(vector <T> a, T ID_) {
         n = a.size();
         lg.resize(n + 1);
-        dbg(n);
         ID = ID_;
         for(int i = 2; i <= n; i++)
             lg[i] = lg[i >> 1] + 1;
         L = lg[n] + 1;
-        dbg(L);
         table = vector<vector<T>> (n, vector<T>(L));
         for(int i = 0; i < n; i++)
             table[i][0] = a[i];
@@ -68,11 +60,7 @@ struct SparseTable {
 };
 
 int main() {
-    vector <int> a = {10, 5, 9, 6, 4, 7};
-    SparseTable <int> X(a, 0);
-
-    for(int i = 0; i < 6; i++)
-        for(int j = i; j < 6; j++)
-            dbg(i, j, X.query2(i, j));
+ 
+    
     return 0;
 }

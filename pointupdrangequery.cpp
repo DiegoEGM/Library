@@ -34,17 +34,17 @@ struct SegmentTree {
         build(2 * u + 2, md + 1, r, a);
         st[u] = node_t(st[2 * u + 1], st[2 * u + 2]);
     }
-    void point_upd(base_t v, int p) { point_upd(v, p, 0, 0, n_ - 1); }
-    void point_upd(base_t v, int p, int u, int l, int r) {
+    void point_upd(int p, base_t v) { point_upd(p, v, 0, 0, n_ - 1); }
+    void point_upd(int p, base_t v, int u, int l, int r) {
         if(l == r) {
             st[u] = node_t(v);
             return;
         }
         int md = (l + r)/2;
         if(p <= md)
-            point_upd(p, v, 2 * u + 1, l, (l + r)/2);
+            point_upd(p, v, 2 * u + 1, l, md);
         else
-            point_upd(p, v, 2 * u + 1, md + 1, r);
+            point_upd(p, v, 2 * u + 2, md + 1, r);
         st[u] = node_t(st[2 * u + 1], st[2 * u + 2]);
     }
     node_t query(int s, int e) {
@@ -61,8 +61,8 @@ struct SegmentTree {
 };
 
 struct Node {
-    int val;
-    Node(int x = 0) {
+    ll val;
+    Node(ll x = 0) {
         val = x;
     }
     Node(Node a, Node b) {
@@ -75,16 +75,22 @@ struct Node {
 
 
 int main() {
-    int n;
-    scanf("%d", &n);
-    vi arr(n);
-    for(int i = 0; i < n; i++) {
-        scanf("%d", &arr[i]);
-    }
+    int n, q;
+    scanf("%d %d", &n, &q);
+    vi a(n);
+    for(auto &x : a)
+        scanf("%d", &x);
+    SegmentTree<Node, int> ST(a);
 
-    SegmentTree<Node, int> test(arr);
-    printf("%d\n", test.query(0, n - 1).val);
-    test.point_upd(3, 0);
-    printf("%d\n", test.query(0, n - 1).val);
+    while(q--) {
+        int a, b, c;
+        scanf("%d %d %d", &a, &b, &c);
+        if(a == 1) {
+            ST.point_upd(b - 1, c);
+        }
+        else {
+            printf("%lld\n", ST.query(b - 1, c - 1));
+        }
+    }
     return 0;
 }

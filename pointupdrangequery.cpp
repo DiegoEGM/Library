@@ -57,6 +57,22 @@ struct SegmentTree {
         int md = (l + r) / 2;
         return query(s, e, 2 * u + 1, l, md) + query(s, e, 2 * u + 2, md + 1, r);
     }
+    //need to generalize this to some monotone bool func. just does https://cses.fi/problemset/task/1143 for now
+    int first_index(int v, int s, int e) { return first_index(s, e, 0, 0, n_ - 1, v); }
+    int first_index(int s, int e, int u, int l, int r, int v) {
+        if(e < l || r < s) return -1;
+        int md = (l + r) / 2;
+        if(s <= l && r <= e) {
+            if(st[u].val < v) return -1;
+            if(l == r) return l;
+            if(st[2 * u + 1].val >= v)
+                return first_index(s, e, 2 * u + 1, l, md, v);
+             return first_index(s, e, 2 * u + 2, md + 1, r, v);
+        }
+        int left_attempt = first_index(s, e, 2 * u + 1, l, md, v);
+        if(left_attempt != -1) return left_attempt;
+        return first_index(s, e, 2 * u + 1, md + 1, r, v);
+    }
 
 };
 

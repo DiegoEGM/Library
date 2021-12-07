@@ -32,12 +32,12 @@ struct SegmentTree {
         int md = (l + r) / 2;
         build(2 * u + 1, l, md, a);
         build(2 * u + 2, md + 1, r, a);
-        st[u] = node_t(st[2 * u + 1], st[2 * u + 2]);
+        st[u] = st[2 * u + 1] + st[2 * u + 2];
     }
     void point_upd(int p, base_t v) { point_upd(p, v, 0, 0, n_ - 1); }
     void point_upd(int p, base_t v, int u, int l, int r) {
         if(l == r) {
-            st[u] = node_t(v);
+            st[u] = node_t(v); //change value query. can change for add, etc.
             return;
         }
         int md = (l + r)/2;
@@ -45,68 +45,49 @@ struct SegmentTree {
             point_upd(p, v, 2 * u + 1, l, md);
         else
             point_upd(p, v, 2 * u + 2, md + 1, r);
-        st[u] = node_t(st[2 * u + 1], st[2 * u + 2]);
+        st[u] = st[2 * u + 1] + st[2 * u + 2];
     }
     node_t query(int s, int e) {
         if(s > e) return node_t();
         return query(s, e, 0, 0, n_ - 1);
     }
     node_t query(int s, int e, int u, int l, int r) {
-        if(e < l || r < s) return node_t(); //needs some null thing
+        if(e < l || r < s) return node_t(); //null value
         if(s <= l && r <= e) return st[u];
         int md = (l + r) / 2;
         return query(s, e, 2 * u + 1, l, md) + query(s, e, 2 * u + 2, md + 1, r);
     }
-    //need to generalize this to some monotone bool func. just does https://cses.fi/problemset/task/1143 for now
-    int first_index(int v, int s, int e) { return first_index(s, e, 0, 0, n_ - 1, v); }
-    int first_index(int s, int e, int u, int l, int r, int v) {
+    template <class F> //pass this one as a lambda
+    int first_index(int s, int e, F f) { return first_index<F>(s, e, 0, 0, n_ - 1, f); }
+    template <class F>
+    int first_index(int s, int e, int u, int l, int r, F f) {
         if(e < l || r < s) return -1;
         int md = (l + r) / 2;
         if(s <= l && r <= e) {
-            if(st[u].val < v) return -1;
+            if(!f(st[u])) return -1;
             if(l == r) return l;
-            if(st[2 * u + 1].val >= v)
-                return first_index(s, e, 2 * u + 1, l, md, v);
-             return first_index(s, e, 2 * u + 2, md + 1, r, v);
+            if(f(st[2 * u + 1]))
+                return first_index(s, e, 2 * u + 1, l, md, f);
+             return first_index(s, e, 2 * u + 2, md + 1, r, f);
         }
-        int left_attempt = first_index(s, e, 2 * u + 1, l, md, v);
+        int left_attempt = first_index(s, e, 2 * u + 1, l, md, f);
         if(left_attempt != -1) return left_attempt;
-        return first_index(s, e, 2 * u + 1, md + 1, r, v);
+        return first_index(s, e, 2 * u + 1, md + 1, r, f);
     }
 
 };
 
 struct Node {
-    ll val;
-    Node(ll x = 0) {
+    int val;
+    Node(int x = -inf) {
         val = x;
     }
-    Node(Node a, Node b) {
-        val = a.val + b.val;
-    }
     Node operator + (Node other) {
-        return Node(val + other.val);
+        return Node(max(val, other.val));
     }
 };
 
 
 int main() {
-    int n, q;
-    scanf("%d %d", &n, &q);
-    vi a(n);
-    for(auto &x : a)
-        scanf("%d", &x);
-    SegmentTree<Node, int> ST(a);
-
-    while(q--) {
-        int a, b, c;
-        scanf("%d %d %d", &a, &b, &c);
-        if(a == 1) {
-            ST.point_upd(b - 1, c);
-        }
-        else {
-            printf("%lld\n", ST.query(b - 1, c - 1));
-        }
-    }
     return 0;
 }

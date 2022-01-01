@@ -75,7 +75,7 @@ struct Dinic {
         return T(0);
     }
 
-    T maxFlow() {
+    T max_flow() {
         T ans(0);
         while(bfs()) { //there are still augmenting paths
             fill(all(pt), 0); //new iteration, restart edge pointers
@@ -104,7 +104,7 @@ int main() {
         G.addEdge(a, b, c);
     }
 
-    printf("%lld\n", G.maxFlow());
+    printf("%lld\n", G.max_flow());
     return 0;
 }
 //https://cses.fi/problemset/task/1694

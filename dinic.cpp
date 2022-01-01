@@ -11,23 +11,25 @@ const int mod = 1e9 + 7;
 
 template <class T = int>
 struct Dinic {
-    struct Edge { //u->v with capacity cap. no need to store u.
-        int v;
+    //u->v with capacity cap.
+    //u is not used in algorithm, but its useful for restoring cuts etc.
+    struct Edge {
+        int u, v;
         T cap;
-        Edge(int v_, T cap_) : v(v_), cap(cap_) {}
+        Edge(int u_, int v_, T cap_) : u(u_), v(v_), cap(cap_) {}
     };
 
     int s, t, n;
-    vi pt, dist; //first potential edge, distance in level graph.
-    vector <Edge> edges; //edges in this graph, even indices are original edges, odd are their reverse.
+    vi pt, dist; //first edge to consider and distance in level graph.
+    vector <Edge> edges; //edges in this graph. even indices are original edges, odd are their reverse.
     vector <vi> adj; //index of edge from me.
 
     Dinic(int n_, int s_, int t_)  : n(n_), s(s_), t(t_),
                         pt(n + 1), dist(n + 1), adj(n + 1) {}
 
     void addEdge(int u, int v, T cap) {
-        edges.pb(Edge(v, cap));
-        edges.pb(Edge(u, T(0)));
+        edges.pb(Edge(u, v, cap));
+        edges.pb(Edge(v, u, T(0)));
         adj[u].pb(sz(edges) - 2);
         adj[v].pb(sz(edges) - 1);
     }
@@ -62,11 +64,11 @@ struct Dinic {
                 continue;
             }
             T can_push = dfs(v, min(flow, c));
+            //instead of keeping flow, pushing flow is like decreasing capacity, and
+            //increasing capacity in its reverse.
             if(can_push > 0) {
                 edges[i].cap -= can_push;
                 edges[i ^ 1].cap += can_push;
-                //instead of keeping flow, pushing flow is like decreasing capacity, and
-                //increasing capacity in its reverse.
                 return can_push; //note that pt doesnt increase if this returns
             }
         }
@@ -105,5 +107,4 @@ int main() {
     printf("%lld\n", G.maxFlow());
     return 0;
 }
-
-
+//https://cses.fi/problemset/task/1694

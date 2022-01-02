@@ -27,7 +27,7 @@ struct Dinic {
     Dinic(int n_, int s_, int t_)  : n(n_), s(s_), t(t_),
                         pt(n + 1), dist(n + 1), adj(n + 1) {}
 
-    void addEdge(int u, int v, T cap) {
+    void add_edge(int u, int v, T cap) {
         edges.pb(Edge(u, v, cap));
         edges.pb(Edge(v, u, T(0)));
         adj[u].pb(sz(edges) - 2);
@@ -101,7 +101,7 @@ int main() {
     for(int i = 0; i < m; i++) {
         int a, b, c;
         scanf("%d %d %d",&a, &b, &c);
-        G.addEdge(a, b, c);
+        G.add_edge(a, b, c);
     }
 
     printf("%lld\n", G.max_flow());

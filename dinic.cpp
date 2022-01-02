@@ -54,12 +54,12 @@ struct Dinic {
         return dist[t] != n;
     }
 
-    T dfs(int u, int flow) {
+    T dfs(int u, T flow) {
         if(u == t) return flow;
         for(; pt[u] < sz(adj[u]); pt[u]++) {
             int i = adj[u][pt[u]];
             int v = edges[i].v;
-            int c = edges[i].cap;
+            T c = edges[i].cap;
             if(!c || dist[v] != dist[u] + 1) {
                 continue;
             }

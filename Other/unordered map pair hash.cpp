@@ -1,4 +1,4 @@
-//very useful to speed up string hashing with two bases!
+//very useful to speed up string hashing with two bases (mantaining hashes)
 struct HASH{
 size_t operator()(const pair<int,int>&x)const{
     return hash<long long>()(((long long)x.first)^(((long long)x.second)<<32));

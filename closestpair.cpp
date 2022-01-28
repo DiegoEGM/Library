@@ -24,6 +24,13 @@ int uid(int x, int y) {
 verify: https://www.spoj.com/problems/CLOPPAIR/
 source : https://codeforces.com/blog/entry/58747.
 not much changes needed for double, maybe consider an eps.
+edit 28/01/2022, doesnt seem to work for
+4
+2 1
+4 4
+1 2
+6 3
+this needs debugging!
 */
 
 using point = pii;

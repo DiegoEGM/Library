@@ -31,6 +31,7 @@ edit 28/01/2022, doesnt seem to work for
 1 2
 6 3
 this needs debugging!
+problem is overflow in choosing best_distance as LLONG_MAX.
 */
 
 using point = pii;

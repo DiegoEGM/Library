@@ -13,35 +13,49 @@ using ll = long long;
 using pii = pair<int, int>;
 using vi = vector<int>;
 
-const int N = 1e6+5;
-const int mod = 1e9 + 7;
 
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-int uid(int x, int y) {
-    return uniform_int_distribution<>(x, y)(rng);
-}
-/*
-verify: https://www.spoj.com/problems/CLOPPAIR/
-source : https://codeforces.com/blog/entry/58747.
-not much changes needed for double, maybe consider an eps.
-edit 28/01/2022, doesnt seem to work for
-4
-2 1
-4 4
-1 2
-6 3
-this needs debugging!
-problem is overflow in choosing best_distance as LLONG_MAX.
+using T = ll;
+
+struct pt {
+    T x, y;
+    pt(T xi = 0, T yi = 0) : x(xi), y(yi) {}
+
+    pt operator + (pt p) const { return pt(x + p.x, y + p.y); }
+    pt operator - (pt p) const { return pt(x - p.x, y - p.y); }
+    pt operator * (T &c) const { return pt(x * c, y * c); }
+    pt operator / (T &c) const { return pt(x / c, y / c); }
+    bool operator == (pt p) const { return x == p.x && y == p.y; }
+    bool operator != (pt p) const { return x != p.x || y != p.y; }
+
+    T sq_len() { return x * x + y * y; }
+    double abs() { return sqrt(sq_len()); }
+
+    pt rot(const double &ang) const {
+        return pt(x * cos(ang) - y * sin(ang), x * sin(ang) + y * cos(ang));
+    }
+    pt perp() { return pt(-y, x); } //rot(pi/2)
+
+    T dot(pt p)  { return x * p.x + y * p.y; }
+    T cross(pt p) { return x * p.y - y * p.x; }
+
+    friend istream& operator >> (istream &is, pt &p) {
+        return is >> p.x >> p.y;
+    }
+    friend ostream& operator<<(ostream& os, const pt &p) {
+        return os  << p.x << " " << p.y;
+    }
+};
+
+/* needs some changes done to the types
+if using doubles
 */
 
-using point = pii;
-
-pair<point, point> closest_point_solver(vector<point> P) {
-    sort(all(P), [&](const point &p, const point &q) { return p.x < q.x; });
-    set <point> S; //sorted by Y.
-    ll best_distance = LLONG_MAX;
+pair<pt, pt> ClosestPair(vector<pt> P) {
+    sort(all(P), [&](const pt &p, const pt &q) { return p.x < q.x; });
+    set <pair<ll, ll>> S;
+    ll best_distance = 8e18;
     int j = 0;
-    pair <point, point> ans;
+    pair <pt, pt> ans;
     for(int i = 0; i < sz(P); i++) {
         ll d = ceil(sqrt(best_distance));
         while(j < i && P[i].x - P[j].x >= d) { //only care for [x - d, x]
@@ -50,13 +64,13 @@ pair<point, point> closest_point_solver(vector<point> P) {
         }
         auto it1 = S.lower_bound({P[i].y - d, P[i].x});
         auto it2 = S.upper_bound({P[i].y + d, P[i].x});
-        //now we have a box of 2d x d. theres just O(1) points here (~8)
+        //now we have a box of 2d x d. theres just O(1) pts here (~8)
         for(auto it = it1; it != it2; ++it) {
             int dx = P[i].x - it->s;
             int dy = P[i].y - it->f;
             ll cur_dist = 1ll * dx * dx + 1ll * dy * dy;
             if(cur_dist < best_distance) {
-                ans = {P[i], {it->s, it->f}};
+                ans = {P[i], pt(it->s, it->f)};
                 best_distance = cur_dist;
             }
         }
@@ -68,29 +82,19 @@ pair<point, point> closest_point_solver(vector<point> P) {
 
 int main() {
     ios_base::sync_with_stdio(0); cin.tie(0);
-    //testing
-    int n = 100;
-    //cin >> n;
-    vector<pii> arr(n);
+
+    int n;
+    cin >> n;
+    vector<pt> arr(n);
     for(int i = 0; i < n; i++) {
-        arr[i].x = uid(-1e9, 1e9); arr[i].y = uid(-1e9, 1e9);
-       // cin >> arr[i].x >> arr[i].y;
+        cin >> arr[i].x >> arr[i].y;
     }
 
-    pair <point, point> ans = closest_point_solver(arr);
+    pair <pt, pt> ans = ClosestPair(arr);
+    ll re = (ans.f.x - ans.s.x) *  (ans.f.x - ans.s.x) +
+                (ans.f.y - ans.s.y) * (ans.f.y - ans.s.y);
 
-    //recover positions in the original array.
-    int idx_a = -1, idx_b = -1;
-    for(int i = 0; i < n; i++) {
-        if(arr[i] == ans.f) idx_a = i;
-        else if(arr[i] == ans.s) idx_b = i;
-    }
-    cout << min(idx_a, idx_b) << " " << max(idx_a, idx_b) << " ";
-    //take square root (we used distance squared for precision)
-    double re = 1.0 * (ans.f.x - ans.s.x) * 1.0 * (ans.f.x - ans.s.x) +
-                1.0 * (ans.f.y - ans.s.y) * 1.0 * (ans.f.y - ans.s.y);
-    re = sqrt(re);
-
-    cout << fixed << setprecision(6) << re;
+    cout << re;
     return 0;
 }
+

@@ -1,14 +1,3 @@
-#include <bits/stdc++.h>
-#define all(x) (x).begin(), (x).end()
-#define sz(x) ((int) (x).size())
-#define pb push_back
-using namespace std;
-
-using vi = vector<int>;
-
-const int N = 2e5 + 3;
-const int mod = 1e9 + 7;
-
 template <class T = int>
 struct Dinic {
     //u->v with capacity cap.
@@ -43,7 +32,7 @@ struct Dinic {
             int u = q.front();
             q.pop();
             for(auto e : adj[u]) {
-                if(edges[e].cap == 0) continue;
+                if(edges[e].cap == T(0)) continue;
                 int v = edges[e].v;
                 if(dist[v] == n) {
                     dist[v] = dist[u] + 1;
@@ -92,19 +81,3 @@ struct Dinic {
         return ans;
     }
 };
-
-int main() {
-    int n, m;
-    scanf("%d %d", &n, &m);
-    Dinic <long long> G (n, 1, n);
-
-    for(int i = 0; i < m; i++) {
-        int a, b, c;
-        scanf("%d %d %d",&a, &b, &c);
-        G.add_edge(a, b, c);
-    }
-
-    printf("%lld\n", G.max_flow());
-    return 0;
-}
-//https://cses.fi/problemset/task/1694

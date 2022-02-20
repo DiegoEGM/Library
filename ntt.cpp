@@ -1,36 +1,16 @@
-#include <bits/stdc++.h>
-#define f first
-#define s second
-#define pb push_back
-#define inf INT_MAX
-#define all(x) (x).begin(), (x).end()
-#define sz(x) ((int) (x).size())
-using namespace std;
-
-using ll = long long;
-using pii = pair<int, int>;
-
-const int N = 2e5 + 3;
 const int P = 998244353, G = 3; //119 * 2^{23} + 1.
-
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+//to-do: check other references for more mods and generators :)
 
 int add(int x, int y) {
-    x += y; if(x >= P) x -= P;
+    x += y;
+    if(x >= P) x -= P;
     return x;
 }
-
-int dec(int x, int y) {
-    x -= y; if(x < 0) x += P;
-    return x;
-}
-
 int mul(int x, int y) {
     ll r = 1ll * x * 1ll * y;
     if(r >= P) r %= P;
     return int(r);
 }
-
 int binexp(int b, int e) {
     int ans = 1;
     while(e) {
@@ -48,7 +28,7 @@ void ntt(vector <int> &a, bool inv = false) {
 
     int w = binexp(G, (P - 1) / n);
     if(inv) w = binexp(w, P - 2);
-    vector <int> roots(n);
+    vi roots(n);
 
     roots[n / 2] = 1;
     for(int i = 1; i < n / 2; i++) {
@@ -58,7 +38,7 @@ void ntt(vector <int> &a, bool inv = false) {
         roots[i] = roots[2 * i];
     }
 
-    vector<int> rev(n);
+    vi rev(n);
     for(int i = 0; i < n; i++) {
         rev[i] = rev[i / 2] / 2 + ((i & 1) << (L - 1));
     }
@@ -82,9 +62,8 @@ void ntt(vector <int> &a, bool inv = false) {
             a[i] = mul(a[i], n_inv);
     }
 }
-
-
-vector <int> mult(vector<int> a, vector <int> b) {
+//(conv)
+vi mult(vi a, vi b) {
     int L = 32 - __builtin_clz(sz(a) + sz(b) - 1);
     int N = 1 << L;
     while(a.size() < N) a.pb(0);
@@ -98,12 +77,4 @@ vector <int> mult(vector<int> a, vector <int> b) {
     return c;
 }
 
-int main() {
-    vector <int> A = {4, 1, 5}, B = {3, 1};
 
-    vector<int> C = mult(A, B);
-    for(auto x : C) {
-        printf("%d ", x);
-    }
-    return 0;
-}

@@ -55,7 +55,7 @@ vector <C> conv(vector<C> a, vector <C> b) {
 }
 
 //helper function to multiply stuff with int coefs
-vector <int> mult(vector<int> &A, vector <int> &B) {
+vi mult(vi &A, vi &B) {
     int n = A.size(), m = B.size();
     vector <C> a(n), b(m), c;
     for(int i = 0; i < n; i++)
@@ -63,7 +63,7 @@ vector <int> mult(vector<int> &A, vector <int> &B) {
     for(int i = 0; i < m; i++)
         b[i] = B[i];
     c = conv(a, b);
-    vector <int> C(c.size());
+    vi C(c.size());
     for(int i = 0; i < c.size(); i++) {
         C[i] = int(round(real(c[i])));
     }

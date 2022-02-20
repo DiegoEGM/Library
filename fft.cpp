@@ -1,21 +1,3 @@
-#include <bits/stdc++.h>
-#define f first
-#define s second
-#define pb push_back
-#define inf INT_MAX
-#define all(x) (x).begin(), (x).end()
-#define sz(x) ((int) (x).size())
-using namespace std;
-
-using ll = long long;
-using pii = pair<int, int>;
-using vi = vector<int>;
-
-const int N = 2e5 + 3;
-const int mod = 1e9 + 7;
-
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-
 using db = double; //long double
 const db PI = acos(-1.0);
 using C = complex<db>;
@@ -36,7 +18,7 @@ void fft(vector <C> &a, bool inv = false) {
         roots[i] = roots[2 * i];
     }
 
-    vector <int> rev(n);
+    vi rev(n);
     for(int i = 0; i < n; i++) {
         rev[i] = rev[i / 2] / 2 + ((i & 1) << (L - 1));
     }
@@ -59,7 +41,7 @@ void fft(vector <C> &a, bool inv = false) {
             a[i] /= db(n);
 }
 
-vector <C> mult(vector<C> a, vector <C> b) {
+vector <C> conv(vector<C> a, vector <C> b) {
     int N = 1 << (32 - __builtin_clz(sz(a) + sz(b) - 1));
     while(a.size() < N) a.pb(0);
     while(b.size() < N) b.pb(0);
@@ -72,6 +54,7 @@ vector <C> mult(vector<C> a, vector <C> b) {
     return c;
 }
 
+//helper function to multiply stuff with int coefs
 vector <int> mult(vector<int> &A, vector <int> &B) {
     int n = A.size(), m = B.size();
     vector <C> a(n), b(m), c;
@@ -79,7 +62,7 @@ vector <int> mult(vector<int> &A, vector <int> &B) {
         a[i] = A[i];
     for(int i = 0; i < m; i++)
         b[i] = B[i];
-    c = mult(a, b);
+    c = conv(a, b);
     vector <int> C(c.size());
     for(int i = 0; i < c.size(); i++) {
         C[i] = int(round(real(c[i])));
@@ -89,11 +72,3 @@ vector <int> mult(vector<int> &A, vector <int> &B) {
     return C;
 }
 
-int main() {
-    vector<int> A = {4, 1, 5}, B = {3, 1};
-    vector <int> C = mult(A, B);
-    for(auto x : C) {
-        printf("%d ", x);
-    }
-    return 0;
-}

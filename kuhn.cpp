@@ -10,7 +10,6 @@ struct Kuhn {
     vector <vi> adj;
     vi match;
     vector <bool> used;
-
     Kuhn(int n1, int n2) : n_left(n1), n_right(n2) {
         match.resize(n_right + 1, -1);
         used.resize(n_left + 1, false);
@@ -30,12 +29,10 @@ struct Kuhn {
         }
         return false;
     }
-
     void do_matching() {
         for(int i = 1; i <= n_left; i++) {
             used.assign(n_left + 1, false);
             try_kuhn(i);
         }
     }
-
 };

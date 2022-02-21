@@ -1,28 +1,23 @@
-#include <bits/stdc++.h>
-using namespace std;
-using ll = long long;
-
-const int N = 1e5+3;
-
 /*
-complexity O(nm) = O(#components left side * #edges)
-source:
-https://cp-algorithms.com/graph/kuhn_maximum_bipartite_matching.html
-consider the heuristic of taking a naive matching first.
-modifications for when the partition isnt clear should be somewhat easy to make
+complexity = O(nm) = O(n_left * #edges)
+speed up heuristic to consider: first try a greedy matching
+to recover, just check from 1 to n_right if G.match[i] != -1, then its
+G.match[i] -> i.
+Dinic is faster, but this could come in handy, its shorter :p
 */
-
 struct Kuhn {
-    int sz1, sz2;
-    vector <int> *adj;
-    vector <int> match;
+    int n_left, n_right;
+    vector <vi> adj;
+    vi match;
     vector <bool> used;
 
-    Kuhn(vector <int> *adj_, int n_, int m_) {
-        sz1 = n_, sz2 = m_, adj = adj_;
-        match.resize(m_ + 1, -1), used.resize(n_ + 1, false);
+    Kuhn(int n1, int n2) : n_left(n1), n_right(n2) {
+        match.resize(n_right + 1, -1);
+        used.resize(n_left + 1, false);
+        adj.resize(n_left + 1);
     }
-
+    //u in left, v in right
+    void add_edge(int u, int v) { adj[u].pb(v); }
     bool try_kuhn(int node) {
         if(used[node])
             return false;
@@ -36,35 +31,11 @@ struct Kuhn {
         return false;
     }
 
+    void do_matching() {
+        for(int i = 1; i <= n_left; i++) {
+            used.assign(n_left + 1, false);
+            try_kuhn(i);
+        }
+    }
+
 };
-
-int n, k, m; //#comps 1st part, #comps 2nd part, #edges
-//note adj must only contain from the 1st part to the 2nd one
-vector <int> adj[N];
-
-int main() {
-    #ifndef LOCAL
-        ios_base::sync_with_stdio(false); cin.tie(0);
-    #endif // LOCAL
-    ////trying
-    cin >> n >> k >> m;
-    for(int i = 0; i < m; i++) {
-        int a, b;
-        cin >> a >> b;
-        assert(a >= 1 && a <= n && b >= 1 && b <= k);
-        adj[a].push_back(b);
-    }
-
-    Kuhn G(adj, n, k);
-    for(int i = 1; i <= n; i++) {
-        G.used.assign(n + 1, false);
-        G.try_kuhn(i);
-    }
-
-    cout << "A maximum matching is:\n";
-    for(int i = 1; i <= k; i++)
-        if(G.match[i] != -1)
-            cout << G.match[i] << " " << i << "\n";
-
-    return 0;
-}

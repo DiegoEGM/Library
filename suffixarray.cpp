@@ -1,17 +1,3 @@
-#include <bits/stdc++.h>
-#define f first
-#define s second
-#define pb push_back
-#define inf INT_MAX
-#define all(x) (x).begin(), (x).end()
-#define sz(x) ((int) (x).size())
-using namespace std;
-
-using ll = long long;
-using pii = pair<int, int>;
-using vi = vector<int>;
-using ld = long double;
-
 template <class T = string>
 struct SuffixArray {
     int n;
@@ -65,8 +51,10 @@ struct SuffixArray {
             if(k) k--;
         }
     }
-
-    template <class RMQ> //declare some SparseTable<int,Minimizer<int>> st, then call this as .LCP(i, j, st)
+    //declare RMQ st(see sparsetable.cpp), then call this as .LCP(i, j, st)
+    //or use a segment tree if memory is low, but add .val to the return
+    //if using one of the template ones
+    template <class RMQ>
     int LCP(int i, int j, RMQ &rmq) {
         if(i == j) return n - i - 1;
         int l = c[i];
@@ -75,7 +63,3 @@ struct SuffixArray {
         return rmq.query(l, r - 1);
     }
 };
-
-int main() {
-    return 0;
-}

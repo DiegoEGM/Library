@@ -1,16 +1,3 @@
-#include <bits/stdc++.h>
-#define f first
-#define s second
-#define pb push_back
-#define inf INT_MAX
-#define all(x) (x).begin(), (x).end()
-#define sz(x) ((int) (x).size())
-using namespace std;
-
-using ll = long long;
-using pii = pair<int, int>;
-using vi = vector<int>;
-
 template <class node_t, class lazy_t, class base_t>
 struct SegmentTree {
     int n_;
@@ -62,7 +49,7 @@ struct SegmentTree {
     }
     node_t query(int s, int e, int u, int l, int r) {
         push(u, l, r);
-        if(e < l || r < s) return node_t(); //null value
+        if(e < l || r < s) return node_t(); //neutral value for Node's +
         if(s <= l && r <= e) return st[u];
         int md = (l + r) / 2;
         return query(s, e, 2 * u + 1, l, md) + query(s, e, 2 * u + 2, md + 1, r);
@@ -85,7 +72,7 @@ struct SegmentTree {
         if(left_attempt != -1) return left_attempt;
         return first_index(s, e, 2 * u + 1, md + 1, r, f);
     }
-    //to do, last index?
+    //to-do: last_index
 
 };
 
@@ -114,8 +101,3 @@ struct Node {
     }
 };
 
-
-int main() {
-
-    return 0;
-}

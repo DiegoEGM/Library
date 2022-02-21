@@ -1,20 +1,3 @@
-#include <bits/stdc++.h>
-#define f first
-#define s second
-#define pb push_back
-#define inf INT_MAX
-#define all(x) (x).begin(), (x).end()
-#define sz(x) ((int) (x).size())
-using namespace std;
-
-using ll = long long;
-using pii = pair<int, int>;
-using vi = vector<int>;
-using ld = long double;
-
-const int N = 3e5 + 3;
-const int mod = 1e9 + 7;
-
 //if T = double change == and != to handle eps.
 struct pt {
     using T = long long;
@@ -64,9 +47,6 @@ bool polar_cmp(pt &a, pt &b) {
     return up(a) < up(b) || (up(a) == up(b) && a.cross(b) > 0);
 }
 
-const double pi = acos(-1.0);
-
-
 //this includes collinear. change ccw to !cw to delete those.
 vector <pt> ConvexHull (vector <pt> v) {
     int n = sz(v);
@@ -90,6 +70,3 @@ vector <pt> ConvexHull (vector <pt> v) {
     return hull;
 }
 
-int main() {
-    return 0;
-}

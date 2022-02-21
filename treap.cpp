@@ -1,4 +1,5 @@
-//NEEDS TESTING AND CLEANING UP
+//NEEDS TESTING AND CLEANING UP!!
+
 #include <bits/stdc++.h>
 #define ft first
 #define sd second
@@ -6,10 +7,7 @@
 using namespace std;
 using ll = long long;
 
-
 /*
-yet another treap. i suppose this one looks good?
-not fully tested.
 verification for the explicit type: https://www.spoj.com/problems/ORDERSET/
 verification for flipping: (freddy y los hotcakes en omegaup)
 verification for more stuff: ???

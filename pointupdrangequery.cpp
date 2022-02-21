@@ -58,7 +58,7 @@ struct SegmentTree {
         if(left_attempt != -1) return left_attempt;
         return first_index(s, e, 2 * u + 1, md + 1, r, f);
     }
-    //---to-do: last_index
+    //to-do: last_index
 
 };
 

@@ -20,7 +20,7 @@ struct matrix {
         return prod;
     }
 
-     matrix operator + (const matrix &b) {
+    matrix operator + (const matrix &b) {
         assert(b.c == c && b.r == r);
         matrix res(r, c);
         for(int i = 0; i < r; i++)

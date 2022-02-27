@@ -70,7 +70,7 @@ struct SegmentTree {
         }
         int left_attempt = first_index(s, e, 2 * u + 1, l, md, f);
         if(left_attempt != -1) return left_attempt;
-        return first_index(s, e, 2 * u + 1, md + 1, r, f);
+        return first_index(s, e, 2 * u + 2, md + 1, r, f);
     }
     //to-do: last_index
 

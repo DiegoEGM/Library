@@ -14,7 +14,6 @@ struct SegmentTree {
             st[u] = node_t(a[l]);
             return;
         }
-
         int md = (l + r) / 2;
         build(2 * u + 1, l, md, a);
         build(2 * u + 2, md + 1, r, a);

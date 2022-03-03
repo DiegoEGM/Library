@@ -7,7 +7,7 @@ struct matrix {
 
     matrix(int r_, int c_) : r(r_), c(c_) {
         r = r_; c = c_;
-        m = vector<vector<T>> (r, vector<T>(c, T(0)));
+        m = vector<vector<T>> (r, vector<T>(c));
     }
 
     matrix operator * (const matrix &b) {

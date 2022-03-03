@@ -4,7 +4,7 @@ struct SCC {
     vector <bool> in_stack;
     stack <int> stk;
     vector <vi> adj;
-   SCC(int n_) : n(n_), t(1) {
+    SCC(int n_) : n(n_), t(1) {
         adj.resize(n + 1);
         min_time.resize(n + 1, 0);
         disc_time.resize(n + 1, 0);

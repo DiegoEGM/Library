@@ -1,4 +1,4 @@
-//fix_potentials still needs testing. rest seems fine
+//get_potentials still needs testing. rest seems fine
 //complexity = O(potentials + |F|dijsktra) = O(nm + F(m log m))
 
 //MinCostFlow

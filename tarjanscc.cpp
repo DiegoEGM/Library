@@ -15,8 +15,9 @@ struct SCC {
     stack <int> stk;
     vector <vi> adj, sccs;
 
-    SCC(int n_) : n(n_), t(1), adj(n + 1),
-        min_time(n + 1), disc_time(n + 1), in_stack(n + 1) {}
+    SCC(int n_) : n(n_), t(1), min_time(n + 1), disc_time(n + 1),
+        in_stack(n + 1), adj(n + 1) {}
+
 
     void add_edge(int u, int v) { adj[u].pb(v); }
     //process the scc with node as its root/head.

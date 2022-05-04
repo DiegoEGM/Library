@@ -1,7 +1,7 @@
 template <class T>
 struct Fenwick2D {
-    vector <vector<T>> tree;
     int n, m;
+    vector <vector<T>> tree;
     Fenwick2D(int n_, int m_) : n(n_), m(m_), tree(n + 1, vector<T>(m + 1)) {}
     T get(int i, int j) {
         if(i <= 0 || i > n || j <= 0 || j > m) return T(0);
@@ -20,3 +20,4 @@ struct Fenwick2D {
         return get(c, d) + get(a - 1, b - 1) - get(c, b - 1) - get(a - 1, d);
     }
 };
+

@@ -29,8 +29,8 @@ struct SCC {
             in_stack[top] = false;
             sccs.back().pb(top);
         } while(top != node);
-
     }
+    
     void tarjan_dfs(int node) {
         if(disc_time[node]) return;
         disc_time[node] = min_time[node] = t++;

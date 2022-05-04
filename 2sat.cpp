@@ -16,7 +16,6 @@ struct TWOSAT {
     bool solve() {
         G.find_sccs();
         vi compo(2 * n + 1);
-        reverse(all(G.sccs));
         for(int i = 0; i < sz(G.sccs); i++) {
             for(auto u : G.sccs[i]) {
                 compo[u] = i;
@@ -24,7 +23,8 @@ struct TWOSAT {
         }
         for(int u = 1; u <= n; u++) {
             if(compo[2 * u - 1] == compo[2 * u]) return false;
-            assignment[u] = compo[2 * u] < compo[2 * u - 1];
+            //assuming reverse topological ordering in G.sccs!
+            assignment[u] = compo[2 * u] > compo[2 * u - 1];
         }
         return true;
     }

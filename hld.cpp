@@ -1,11 +1,10 @@
 struct HLD {
+    int n, t;
+    vi heavy, p, subtree_sz, h, tour, in, head;
     vector <vi> adj;
 
-    vi heavy, p, subtree_sz, h, tour, in, head;
-    int n, t;
-
-    HLD(int n_) : t(0), n(n_ + 1), heavy(n_ + 1), p(n_ + 1), subtree_sz(n_ + 1),
-        h(n_ + 1), tour(n_ + 1), in(n_ + 1), head(n_ + 1), adj(n_ + 1) {}
+    HLD(int n_) : n(n_), t(0), heavy(n + 1), p(n + 1), subtree_sz(n + 1),
+        h(n + 1), tour(n + 1), in(n + 1), head(n + 1), adj(n + 1) {}
 
     void add_edge(int u, int v) {
         adj[u].pb(v);
@@ -52,3 +51,4 @@ struct HLD {
         dfs_hld(1, 1);
     }
 };
+

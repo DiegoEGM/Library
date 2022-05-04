@@ -1,8 +1,8 @@
 //remember this is 1-indexed!
 template <class T>
 struct FenwickTree {
+    int n; 
     vector <T> tree;
-    int n;
     FenwickTree(int n_) : n(n_), tree(n + 1) {}
     T get(int i) {
         if(i <= 0 || i > n) return T(0);

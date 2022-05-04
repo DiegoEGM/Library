@@ -18,8 +18,8 @@ struct SCC {
     SCC(int n_) : n(n_), t(1), adj(n + 1),
         min_time(n + 1), disc_time(n + 1), in_stack(n + 1) {}
 
-    //process the scc with node as its root/head.
     void add_edge(int u, int v) { adj[u].pb(v); }
+    //process the scc with node as its root/head.
     void process_scc(int node) {
         int top;
         sccs.pb({});

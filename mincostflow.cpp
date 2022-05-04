@@ -4,8 +4,8 @@
 //MinCostFlow
 template <class T = int>
 struct MCF {
-    T bound; //how much flow do i want? do inf to just solve MCMF
     int n, s, t;
+    T bound; //how much flow do i want? do inf to just solve MCMF
 
     struct Edge {
         int u, v;
@@ -15,22 +15,16 @@ struct MCF {
 
     vector <Edge> edges;
     vector <vi> adj;
-    vector <T> pot;
-    vector <T> dist;
+    vector <T> pot, dist;
+
+    MCF(int n_, int s_, int t_,  T b = numeric_limits<T>::max()) : n(n_), s(s_), t(t_),
+        bound(b), adj(n + 1), pot(n + 1), dist(n + 1) {}
 
     void add_edge(int u, int v, T c, T w) {
         edges.pb(Edge(u, v, c, w));
         edges.pb(Edge(v, u, 0, -w));
         adj[u].pb(sz(edges) - 2);
         adj[v].pb(sz(edges) - 1);
-    }
-
-    MCF(int n_, int s_, int t_,  T b = numeric_limits<T>::max()) {
-        n = n_; s = s_; t = t_;
-        bound = b;
-        adj.resize(n + 1);
-        pot.resize(n + 1);
-        dist.resize(n + 1);
     }
 
     pair <T, T> mincost_flow() {
@@ -81,12 +75,7 @@ struct MCF {
             flow += path_flow;
             cost += path_cost;
             for(int i = 1; i <= n; i++) {
-                if(!vis[i]) {
-                    dist[i] = 0;
-                }
-                else {
-                    dist[i] += pot[i] - pot[s];
-                }
+                dist[i] = min(dist[i] + pot[i] - pot[s], 0);
             }
             pot = dist;
         }
@@ -110,5 +99,5 @@ struct MCF {
             }
         }
     }
-
 };
+

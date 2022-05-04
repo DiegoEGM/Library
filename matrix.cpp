@@ -2,11 +2,10 @@
 //(see modint.cpp)
 template <class T>
 struct matrix {
-    vector<vector<T>> m;
     int r, c;
-
+    vector<vector<T>> m;
+    
     matrix(int r_, int c_) : r(r_), c(c_) {
-        r = r_; c = c_;
         m = vector<vector<T>> (r, vector<T>(c));
     }
 

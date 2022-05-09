@@ -20,4 +20,3 @@ struct Fenwick2D {
         return get(c, d) + get(a - 1, b - 1) - get(c, b - 1) - get(a - 1, d);
     }
 };
-

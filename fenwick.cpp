@@ -17,7 +17,7 @@ struct FenwickTree {
     }
     //first index i with get(i) >= v (a prefix sum "lower_bound")
     int first_index(T val) {
-        int i = 0, p = 0; //index, log2(n_)
+        int i = 0, p = 0; //index, log2(n)
         T sum = T(0);
         while((1 << (p + 1)) <= n)
             p++;

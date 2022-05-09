@@ -29,4 +29,3 @@ struct TWOSAT {
         return true;
     }
 };
-

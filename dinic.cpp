@@ -7,7 +7,7 @@ struct Dinic {
         T cap;
         Edge(int u_, int v_, T c_) : u(u_), v(v_), cap(c_) {}
     };
-    int s, t, n; //s = source, t = sink.
+    int n, s, t; //s = source, t = sink.
     vi pt, dist; //first edge to consider. distance in level graph.
     vector <Edge> edges; //even indices are original edges, odd are their reverse.
     vector <vi> adj; //adjacency is kept as indices of edges in 'edges' array.

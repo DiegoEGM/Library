@@ -2,7 +2,7 @@ template <class T, class C>
 struct SparseTable {
     int n, l;
     C combine;
-    vector <T> lg;
+    vi lg;
     vector <vector<T>> table;
 
     SparseTable(vector <T> a) {

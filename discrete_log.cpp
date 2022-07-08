@@ -4,12 +4,6 @@
 //tested: https://judge.yosupo.jp/submission/94862
 ll discrete_log(ll a, ll b, ll m) {
     a %= m; b %= m;
-    if(b == 1) return 0;
-    if(a == 0) {
-        if(b == 0) return (m != 1);
-        if(b == 1) return 0;
-        return -1;
-    }
     int shift = 0;
     ll g, coef = 1;
     while((g = gcd(a, m)) > 1) { //converting to coprime case

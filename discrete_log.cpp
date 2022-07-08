@@ -1,6 +1,6 @@
 //returns minimum x such that a^x = b mod m, assuming 0^0 = 1,
 //and -1 if it doesnt exist.
-//O(sqrt(m)) + O(removing the gcds).
+//O(sqrt(m) log m) 
 //tested: https://judge.yosupo.jp/submission/94862
 ll discrete_log(ll a, ll b, ll m) {
     a %= m; b %= m;

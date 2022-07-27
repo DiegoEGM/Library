@@ -2,7 +2,7 @@
 //needs point.cpp
 
 //Returns the vertices of the Minkowski sum of P and Q.
-//P and Q must previously be ordered by (x, y). (leftmost lowest first).
+//P and Q must previously be ordered by (x, y).
 //Sum is returned with the same order. Complexity: O(|P| + |Q|).
 vector <pt> Minkowski(vector <pt> P, vector <pt> Q) {
     P.pb(P[0]);

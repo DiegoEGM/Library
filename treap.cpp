@@ -77,6 +77,7 @@ void trav(pnode t) {
     trav(t->l);
     cout << t->val << " ";
     trav(t->r);
+    upd(t);
 }
 //-----IMPLICIT TREAP OPERATIONS-----
 

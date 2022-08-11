@@ -50,15 +50,8 @@ struct MaxFlowLowerBounds {
             if(u == ss || v == tt || (u == t && v == s)) continue;
             T cap = G.edges[i].cap + G.edges[i^1].cap;
             T flow = G.edges[i^1].cap;
-            T demand = 0;
-            if(u == s) {
-                demand = in[v];
-            }
-            else if(v == t) {
-                demand = out[u];
-            }
-            else {
-                demand = lb[i / 2];
+            T demand = lb[i / 2];
+            if(u != s && v != t) {
                 fixed_sent += flow;
             }
             flow += demand;

@@ -31,7 +31,7 @@ struct MCF {
         T flow = 0;
         T cost = 0;
         get_potentials();
-        vector <bool> vis(n + 1);
+        vector <bool> vis(n + 1, false);
         vi comes_from(n + 1);
 
         while(bound) {
@@ -40,18 +40,19 @@ struct MCF {
             fill(all(dist), numeric_limits<T>::max());
             priority_queue <pair<T, int>, vector<pair<T, int>>, greater<>> pq;
             pq.push({0, s});
+            dist[s] = 0;
             while(!pq.empty()) {
                 auto [d, u] = pq.top();
                 pq.pop();
                 if(vis[u]) continue;
                 vis[u] = true;
-                dist[u] = d;
                 for(int i : adj[u]) {
                     int v = edges[i].v;
                     T c = edges[i].cap;
-                    T w = edges[i].cost + pot[u] - pot[v];
-                    if(c > 0 && !vis[v] && dist[u] + w < dist[v]) {
-                        dist[v] = dist[u] + w;
+                    T d = dist[u] + edges[i].cost + pot[u] - pot[v];
+
+                    if(c > 0 && !vis[v] && d < dist[v]) {
+                        dist[v] = d;
                         comes_from[v] = i;
                         pq.push({dist[v], v});
                     }
@@ -63,8 +64,8 @@ struct MCF {
             for(int v = t; v != s; v = edges[comes_from[v]].u) {
                 path_flow = min(path_flow, edges[comes_from[v]].cap);
                 path_cost += edges[comes_from[v]].cost;
+
             }
-            assert(path_flow > 0);
             path_cost *= path_flow;
             bound -= path_flow;
             for(int v = t; v != s; v = edges[comes_from[v]].u) {
@@ -75,14 +76,12 @@ struct MCF {
             flow += path_flow;
             cost += path_cost;
             for(int i = 1; i <= n; i++) {
-                dist[i] = min(dist[i] + pot[i] - pot[s], 0);
+                dist[i] += pot[i] - pot[s];
             }
             pot = dist;
         }
         return {flow, cost};
     }
-
-    //should find a problem where this is needed
     void get_potentials() {
         bool all_non_negative = true;
         for(int i = 0; i < sz(edges); i += 2)
@@ -100,4 +99,3 @@ struct MCF {
         }
     }
 };
-

@@ -57,11 +57,11 @@ struct Dinic {
     }
     T max_flow() {
         T ans(0);
-        for(lim = scaling ? (1 << 30) : 1; lim; lim /= 2) {
+        for(lim = scaling ? (1 << 30) : 1; lim; lim /= 2) { //change to bigger inf?
             while(bfs()) {
                 fill(all(pt), 0);
                 while(true) {
-                    T flow = dfs(s, T(1e9));
+                    T flow = dfs(s, T(1e9)); //change to bigger inf?
                     if(flow > 0) ans += flow;
                     else break;
                 }

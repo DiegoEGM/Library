@@ -11,8 +11,8 @@ struct Dinic {
     vi pt, dist;
     vector <Edge> edges;
     vector <vi> adj;
-    Dinic(int n_, int s_, int t_, bool sc = false)  : n(n_), s(s_), t(t_),
-                        pt(n + 1), dist(n + 1), adj(n + 1), scaling(sc) {}
+    Dinic(int n_, int s_, int t_, bool sc = false) : scaling(sc), n(n_), s(s_), t(t_),
+                        pt(n + 1), dist(n + 1), adj(n + 1) {}
     void add_edge(int u, int v, T cap) {
         edges.pb(Edge(u, v, cap));
         edges.pb(Edge(v, u, T(0)));

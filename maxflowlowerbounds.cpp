@@ -44,15 +44,16 @@ struct MaxFlowLowerBounds {
         G_new = Dinic <T> (n - 2, s, t);
         T fixed_sent = 0;
 
-        for(int i = 0; i < sz(lb); i++) {
-            int u = G.edges[2*i].u;
-            int v = G.edges[2*i].v;
-            T cap = G.edges[2*i].cap + G.edges[2*i+1].cap;
-            T flow = G.edges[2*i+1].cap;
-            T demand = lb[i];
-            if(u != s && v != t) {
-                fixed_sent += flow;
+        for(int i = 0; i < sz(G.edges); i += 2) {
+            int u = G.edges[i].u;
+            int v = G.edges[i].v;
+            T flow = G.edges[i^1].cap;
+            if(u == t && v == s) {
+                fixed_sent = flow;
             }
+            if(u == ss || v == tt || (u == t && v == s)) continue;
+            T cap = G.edges[i].cap + G.edges[i^1].cap;
+            T demand = lb[i / 2];
             flow += demand;
             cap += demand;
             G_new.add_edge(u, v, cap - flow);
@@ -62,3 +63,4 @@ struct MaxFlowLowerBounds {
         return fixed_sent + mf;
     }
 };
+

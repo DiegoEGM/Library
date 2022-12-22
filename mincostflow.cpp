@@ -5,37 +5,31 @@
 template <class T = int>
 struct MCF {
     int n, s, t;
-    T bound; //how much flow do i want? do inf to just solve MCMF
-
+    T bound;
     struct Edge {
         int u, v;
         T cap, cost;
         Edge(int u_, int v_, T c, T w) : u(u_), v(v_), cap(c), cost(w) {}
     };
-
     vector <Edge> edges;
     vector <vi> adj;
     vector <T> pot, dist;
-
-    MCF(int n_, int s_, int t_,  T b = numeric_limits<T>::max()) : n(n_), s(s_), t(t_),
-        bound(b), adj(n + 1), pot(n + 1), dist(n + 1) {}
-
+    bool any_flow;
+    MCF(int n_, int s_, int t_, bool af = false, T b = numeric_limits<T>::max())
+     : n(n_), s(s_), t(t_), bound(b), adj(n + 1), pot(n + 1), dist(n + 1), any_flow(af) {}
     void add_edge(int u, int v, T c, T w) {
         edges.pb(Edge(u, v, c, w));
         edges.pb(Edge(v, u, 0, -w));
         adj[u].pb(sz(edges) - 2);
         adj[v].pb(sz(edges) - 1);
     }
-
     pair <T, T> mincost_flow() {
+        //call get potentials if needed!
         T flow = 0;
         T cost = 0;
-        get_potentials();
         vector <bool> vis(n + 1, false);
         vi comes_from(n + 1);
-
         while(bound) {
-            //get augmenting path
             fill(all(vis), false);
             fill(all(dist), numeric_limits<T>::max());
             priority_queue <pair<T, int>, vector<pair<T, int>>, greater<>> pq;
@@ -67,6 +61,7 @@ struct MCF {
 
             }
             path_cost *= path_flow;
+            if(any_flow && path_cost >= 0) break;
             bound -= path_flow;
             for(int v = t; v != s; v = edges[comes_from[v]].u) {
                 int i = comes_from[v];
@@ -83,11 +78,6 @@ struct MCF {
         return {flow, cost};
     }
     void get_potentials() {
-        bool all_non_negative = true;
-        for(int i = 0; i < sz(edges); i += 2)
-            all_non_negative &= edges[i].cost >= 0;
-        if(all_non_negative) return;
-
         for(int i = 1; i <= n; i++) {
             for(auto e : edges) {
                 if(e.cap == 0) continue;
@@ -99,3 +89,4 @@ struct MCF {
         }
     }
 };
+

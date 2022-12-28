@@ -1,5 +1,7 @@
 template <class T = int, class Info = int>
 struct ColorUpdate {
+    bool maximal;
+    ColorUpdate(bool f = false) : maximal(f) {}
     struct Range {
         T l, r;
         Info u;
@@ -32,7 +34,7 @@ struct ColorUpdate {
     }
     vector <Range> upd(T l, T r, Info u) { if(l > r) return {};
         auto updated = del(l, r);
-        { //add this block only if the subarrays need to be maximal
+        if(maximal) {
             auto it_l = S.lower_bound(l);
             if(it_l != S.begin()) {
                 it_l--;

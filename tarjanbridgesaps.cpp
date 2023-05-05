@@ -1,57 +1,43 @@
 /*
 O((n + m) log n) since we use a set for bridges and artic points.
-bridges can just be a vector without problem (if no double edges).
-artic points can be a vector if we also keep an 'already in set'
-flag, to make it O(n + m).
+Can be made O(n + m) by keeping artic points in a vector (flag if it is),
+and same for edges if we know an edge id.
 */
-struct BridgeAndArticulation {
+struct Tarjan {
     int t, n;
-    vi min_time, disc_time;
-    vector <bool> in_stack;
-    stack <int> stk;
+    vi mt, dt, in_stack; //mt = min time, dt = discovery time
     vector <vi> adj;
     set <pii> bridges;
     set <int> artic_points;
-    BridgeAndArticulation(int n_) : n(n_), t(1) {
-        adj.resize(n + 1);
-        min_time.resize(n + 1, 0);
-        disc_time.resize(n + 1, 0);
-        in_stack.resize(n + 1, false);
-        artic_points.clear();
-        bridges.clear();
-    }
+    Tarjan(int n_) : n(n_), t(1), adj(n + 1), mt(n + 1), dt(n + 1), in_stack(n + 1) {}
     void add_edge(int u, int v) { adj[u].pb(v); adj[v].pb(u); }
-    void tarjan_dfs(int node, int par) {
-        if(disc_time[node]) return;
+    void tarjan_dfs(int u, int par) {
+        if(dt[u]) return;
         int child_cnt = 0;
-        disc_time[node] = min_time[node] = t++;
-        stk.push(node);
-        in_stack[node] = true;
-
-        for(auto u : adj[node]) {
-            //edge to parent isn't backedge
-            //(consider changing that if it actually allows double edges)
-            if(u == par) continue;
-            if(!disc_time[u]) {
-                tarjan_dfs(u, node);
+        dt[u] = mt[u] = t++;
+        in_stack[u] = 1;
+        for(int v : adj[u]) {
+            if(v == par) continue;
+            if(!dt[v]) {
+                tarjan_dfs(v, u);
                 child_cnt++;
-                min_time[node] = min(min_time[node], min_time[u]);
-                if(min_time[u] >= disc_time[node] && par != -1) {
-                    artic_points.insert(node);
+                mt[u] = min(mt[u], mt[v]);
+                if(mt[v] >= dt[u] && par != -1) {
+                    artic_points.insert(u);
                 }
-                if(min_time[u] > disc_time[node]) {
-                    bridges.insert({min(node, u), max(node, u)});
+                if(mt[v] > dt[u]) {
+                    bridges.insert({min(v, u), max(u, v)});
                 }
                 else {
-                    //can connect (node, u) with a dsu here, for a bridge tree.
+                    //can connect (u, v) a bridge tree
                 }
             }
-            else if(in_stack[u]) {
-                min_time[node] = min(min_time[node], disc_time[u]);
+            else if(in_stack[v]) {
+                mt[u] = min(mt[u], dt[v]);
             }
         }
-        if(par == -1 && child_cnt > 1)
-            artic_points.insert(node);
+        in_stack[u] = 0;
+        if(par == -1 && child_cnt > 1) artic_points.insert(u);
     }
     void find_points_and_bridges() {
         for(int i = 1; i <= n; i++) tarjan_dfs(i, -1);

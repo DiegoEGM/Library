@@ -1,10 +1,9 @@
 //get_potentials still needs testing. rest seems fine
 //complexity = O(potentials + |F|dijsktra) = O(nm + F(m log m))
-
-//MinCostFlow
 template <class T = int>
 struct MCF {
     int n, s, t;
+    static constexpr T T_inf = numeric_limits<T>::max();
     T bound;
     struct Edge {
         int u, v;
@@ -15,7 +14,7 @@ struct MCF {
     vector <vi> adj;
     vector <T> pot, dist;
     bool any_flow;
-    MCF(int n_, int s_, int t_, bool af = false, T b = numeric_limits<T>::max())
+    MCF(int n_, int s_, int t_, T b = T_inf, bool af = false)
      : n(n_), s(s_), t(t_), bound(b), adj(n + 1), pot(n + 1), dist(n + 1), any_flow(af) {}
     void add_edge(int u, int v, T c, T w) {
         edges.pb(Edge(u, v, c, w));
@@ -31,7 +30,7 @@ struct MCF {
         vi comes_from(n + 1);
         while(bound) {
             fill(all(vis), false);
-            fill(all(dist), numeric_limits<T>::max());
+            fill(all(dist), T_inf);
             priority_queue <pair<T, int>, vector<pair<T, int>>, greater<>> pq;
             pq.push({0, s});
             dist[s] = 0;
@@ -89,4 +88,3 @@ struct MCF {
         }
     }
 };
-

@@ -1,29 +1,25 @@
 template <class T = int, class Info = int>
-struct ColorUpdate {
+struct IntervalContainer {
     bool maximal;
-    ColorUpdate(bool f = false) : maximal(f) {}
-    struct Range {
+    IntervalContainer(bool f = false) : maximal(f) {}
+    struct Inter {
         T l, r;
         Info u;
-        Range(T r_ = 0) : r(r_) {}
-        Range(T l_, T r_, Info u_) : l(l_), r(r_), u(u_) {}
-        bool operator < (const Range &o) const { return r < o.r; }
+        Inter(T r_ = 0) : r(r_) {}
+        Inter(T l_, T r_, Info u_) : l(l_), r(r_), u(u_) {}
+        bool operator < (const Inter &o) const { return r < o.r; }
     };
-    set <Range> S;
-    //recolor [l, r] with u's info
-    vector<Range> del(T l, T r) { if(l > r) return {};
-        vector <Range> updated;
+    set <Inter> S;
+    //returns deleted intervals
+    vector<Inter> del(T l, T r) { if(l > r) return {};
+        vector <Inter> updated;
         for(T pos : {l, r}) {
             auto it = S.lower_bound(pos);
             if(it != S.end() && it->l <= pos) {
                 auto old = *it;
                 S.erase(it);
-                if(old.l != pos) {
-                    S.insert(Range(old.l, pos - 1, old.u));
-                }
-                if(old.r != pos) {
-                    S.insert(Range(pos + 1, old.r, old.u));
-                }
+                if(old.l != pos) S.insert(Inter(old.l, pos - 1, old.u));
+                if(old.r != pos) S.insert(Inter(pos + 1, old.r, old.u));
             }
         }
         for(auto it = S.lower_bound(l); it != S.upper_bound(r); it++) {
@@ -32,7 +28,8 @@ struct ColorUpdate {
         S.erase(S.lower_bound(l), S.upper_bound(r));
         return updated;
     }
-    vector <Range> upd(T l, T r, Info u) { if(l > r) return {};
+    //recolor [l, r] with info u
+    vector <Inter> upd(T l, T r, Info u) { if(l > r) return {};
         auto updated = del(l, r);
         if(maximal) {
             auto it_l = S.lower_bound(l);
@@ -49,14 +46,14 @@ struct ColorUpdate {
                 S.erase(it_r);
             }
         }
-        S.insert(Range(l, r, u));
+        S.insert(Inter(l, r, u));
         return updated;
     }
     bool elem(T pos) {
         auto it = S.lower_bound(pos);
         return it != S.end() && it->l <= pos;
     }
-    Range cover(T pos) { //assert(elem(pos));
+    Inter cover(T pos) { //assert(elem(pos));
         return *S.lower_bound(pos);
     }
 };

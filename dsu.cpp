@@ -8,7 +8,7 @@ struct dsu {
     bool join(int u, int v) {
         u = tag(u), v = tag(v);
         if(u == v) return false;
-        if(info[u] > info[v]) swap(u, v);
+        if(info[u] < info[v]) swap(u, v);
         info[v] += info[u];
         info[u] = v;
         return true;
